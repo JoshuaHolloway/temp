@@ -10,6 +10,12 @@ body {
   width: 100vw;
   display: grid;
   grid-template-rows: repeat(3, 1fr);
+  /* Mod for rows */
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.title-row, .row {
+  display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
 
@@ -20,10 +26,6 @@ body {
 
 .table-serving > .serving-input {
   width: 30%;
-}
-
-div {
-  border: solid black 1px;
 }
 
 .drop-down-container {

@@ -2,27 +2,37 @@
   box-sizing: border-box;
 }
 
-body { width: 100vw; }
+body {
+  width: 100vw;
+}
 
 .grid-container {
   width: 100vw;
   display: grid;
   grid-template-rows: repeat(3, 1fr);
+
+  /* Mod for rows */
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.title-row, .row {
+  display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
 
-// container for input field on each row
 .table-serving {
   display: flex;
   justify-content: center;
 }
+
 .table-serving > .serving-input {
   width: 30%;
 }
 
 div {
-  border: solid black 1px;
+  //border: solid black 1px;
 }
+
 
 .drop-down-container {
   height: 100%;
