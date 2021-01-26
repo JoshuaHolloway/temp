@@ -1,4 +1,4 @@
-let num_rows = 2;
+let num_rows = 1;
 
 // ==============================================
 
@@ -38,15 +38,15 @@ add_food_button.addEventListener('click', () => {
   // console.log('keys: ', keys);
   
   // Generate drop down:
-  new_elem_1.innerHTML = `
-  <div class="drop-down-container">
-  <div class="drop-down">Drop-Down</div>
-  <div class="list-container show">
-  <ul>
-  </ul>
-  </div>
-  </div>`;
-  
+  new_elem_1.innerHTML = 
+    `<div class="drop-down-container">
+    <div class="drop-down">Drop-Down</div>
+      <div class="list-container show">
+        <ul>
+        </ul>
+      </div>
+    </div>`;
+    
   const ul = document.querySelector('.list-container > ul');
   
   // - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,44 +91,104 @@ add_food_button.addEventListener('click', () => {
       const food_name = food_option_HTML.innerText;
       
       // Update foods object with food data from known foods array based on selection of new food
-      foods[food_name] = known_foods[food_name];
+      foods[food_name] = {
+        name: food_name,
+        nutrition_facts: {},
+        servings: 0
+      };
+      foods[food_name].nutrition_facts.protein = known_foods[food_name].protein;
+      foods[food_name].nutrition_facts.carbs = known_foods[food_name].carbs;
+      foods[food_name].nutrition_facts.fat = known_foods[food_name].fat;
       foods[food_name].name = food_name;
       foods[food_name].servings = 0;
       
-      // Turn off the drop down menu
+      // -Turn off the drop down menu
       const list_container = document.querySelector('.list-container')
       list_container.classList.remove('show');
+      // -Removing the 'show' class on the element causes the drop-down to be in the
+      //  non-dropped-down state.
+      // -We now want to actually delete the drop-down all together.
+      
+      // -Change HTML where the drop-down is currently:
+      new_elem_1.innerHTML = ` `;
+      // TODO: Change these variables to more descriptive names!!
+
+      // -Change HTML for new row to exactly match the working rows:
+      new_row.innerHTML = 
+        `<div class="table-food-name">Banana:</div>
+        <div class="table-food-protein"></div>
+        <div class="table-food-carbs"></div>
+        <div class="table-food-fat"></div>
+        <div class="table-food-cals"></div>
+        <div class="table-serving">
+          <input class="serving-input" type="number" >
+        </div>`;
       
       // Update table with foods object data
       const table_rows = document.querySelectorAll('.grid-container > .row');
 
       // -We update foods object.
       // -We need to grab all the keys from the update object.
+      
+      
+      // TODO: Simplify this janky ass code!
       foods_keys = Object.keys(foods);
-      table_rows.forEach((current_row, current_row_idx) => {
-        const child_nodes = current_row.childNodes;
-        const row_name_HTML = child_nodes[1];
-        // const row_name = child_nodes[1].innerText.split(':')[0];
-        
-        // Update row name in table from foods object
-        debugger;
-        row_name_HTML.innerText = foods_keys[current_row_idx];
-        
-        // TODO: Update other data in table for each food in foods object
-        //const row_servings = Number(child_nodes[3].Value);
-        
 
+
+
+      // Loop over each row
+      table_rows.forEach((current_row, current_row_idx) => {
+
+        const food_key = foods_keys[current_row_idx];
+        const food = foods[food_key];
+
+        
+        
+        const child_nodes = current_row.childNodes;
+        const child_nodes_array = Array.from(child_nodes);
+        
+        // Make whitespace not matter in HTML!
+        const useful_nodes = Array.from(child_nodes).filter(x => x.nodeType !== 3);       
+        // useful_nodes (each is a col in one row):
+        // 0: Name
+        // 1: protein
+        // 2: Servings
+        
+        const current_row_servings_input_field = current_row.querySelector('.serving-input');
+        current_row_servings_input_field.value = food.servings;
+        
+        const row_name_HTML = useful_nodes[0];
+        const protein_HTML = useful_nodes[1];
+        const carbs_HTML = useful_nodes[2];
+        const fat_HTML = useful_nodes[3];
+        row_name_HTML.innerText = food.name;
+        
+        // Add event listener to the input field for servings of this row
+        current_row_servings_input_field.addEventListener('change', (event) => {
+          console.log('changed');
+          
+          // Nutrition Facts:
+          food.servings = Number(event.target.value);
+          const servings = food.servings;
+
+          protein_HTML.innerText = (servings * food.nutrition_facts.protein).toFixed(1);
+          carbs_HTML.innerText = (servings * food.nutrition_facts.carbs).toFixed(1);
+          fat_HTML.innerText = (servings * food.nutrition_facts.fat).toFixed(1);
+
+          const cals_per_serving = compute_cals(
+            food.nutrition_facts.protein,
+            food.nutrition_facts.fat,
+            food.nutrition_facts.carbs
+          );
+
+          // Total cals for this row
+          const cals = (servings * cals_per_serving).toFixed(1);
+          current_row.querySelector('.table-food-cals').innerText = cals;
+        });
       });
-      
-      
-      // Add event listener to newly created row
-      // -For simplicity, just re-set event listeners on all rows
-      set_input_field_listeners();
-      
-      
     });
   });
   
   // - - - - - - - - - - - - - - - - - - - - - - -
-  
+
 });

@@ -1,75 +1,36 @@
-* {
-  box-sizing: border-box;
-}
+// Variables
+// Material Dark Theme: https://material.io/design/color/dark-theme.html#ui-application
+$primary: #BB86FC;//#401f7c;
+$secondary: #03DAC5; 
+$success: #3700B3; // Primary-Variant
+$error: #CF6679;
+$dark: #121212; // Background / Surface
+$border-radius: 0;
+$border-radius-sm: 0;
+$border-radius-lg: 0;
 
-body {
-  width: 100vw;
-}
+// Utilities
+$utilities: () !default;
+$utilities: map-merge(
+  (
+    'input-padding': (
+      property: padding,
+      class: JOSH,
+      values: (
+        0: 0,
+        1: 0.3rem,
+        2: 0.5rem,
+        3: 0.7rem,
+        4: 0.9rem,
+        5: 1rem
+      )
+    ),
+    // Can add anoterh utility here
+  ),
+  $utilities
+);
 
-.grid-container {
-  width: 100vw;
-  display: grid;
-  grid-template-rows: repeat(3, 1fr);
+// ========================================================
 
-  /* Mod for rows */
-  grid-template-columns: repeat(1, 1fr);
-}
-
-.title-row, .row {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.table-serving {
-  display: flex;
-  justify-content: center;
-}
-
-.table-serving > .serving-input {
-  width: 30%;
-}
-
-div {
-  //border: solid black 1px;
-}
-
-
-.drop-down-container {
-  height: 100%;
-  width: 100%;
-  background: red;
-
-  position: relative;
-}
-
-.drop-down {
-  height: 100%;
-  width: 100%;
-  border: solid 5px hotpink;
-  cursor: pointer;
-}
-
-.list-container {
-  width: 100px;
-  opacity: 0;
-  background: darkorchid;
-  transition: opacity 0.3s ease;
-  position: absolute;
-}
-
-.show {
-  opacity: 1;
-}
-
-ul {
-  list-style: none;
-}
-.list-container > ul > li {
-  cursor: pointer;
-}
-.list-container > ul > li:nth-child(1) {
-  background: blue;
-}
-.list-container > ul > li:nth-child(2) {
-  background: green;
-}
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+@import 'style';
